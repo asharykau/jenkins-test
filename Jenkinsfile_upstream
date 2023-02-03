@@ -53,5 +53,13 @@ pipeline{
                 }
             }
         }
+        post {
+            always {
+                script {
+                    EMOJI = EMOJI_MAP[currentBuild.currentResult]
+                    slackNotify.addReaction(EMOJI_MAP[currentBuild.currentResult])
+                }
+            }
+        }
     }
 }
