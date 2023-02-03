@@ -1,3 +1,17 @@
+def COLOR_MAP = [
+    'SUCCESS': 'good',
+    'FAILURE': 'danger',
+    'ABORTED': 'warning',
+]
+
+def EMOJI_MAP = [
+    'SUCCESS': 'white_check_mark',
+    'FAILURE': 'x',
+    'ABORTED': 'heavy_multiplication_x',
+]
+
+def SLACK_CHANNEL = 's_test'
+
 def getBuildUser() {
     if (currentBuild.rawBuild.getCause(Cause.UserIdCause)) {
         return currentBuild.rawBuild.getCause(Cause.UserIdCause).getUserId()
@@ -10,6 +24,17 @@ pipeline{
     agent any
 
     stages{
+        
+        stage('Send slack notification') {
+            steps {
+                script {
+                    slackNotify = slackSend(channel: "${SLACK_CHANNEL}", message: "Start Build")
+                    message_tread = slackNotify.threadId
+                    timestamp = slackNotify.ts
+                }
+            }
+        }
+        
         stage('Run Downstream'){
             steps{
                 script{
