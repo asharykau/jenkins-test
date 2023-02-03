@@ -12,12 +12,6 @@ def EMOJI_MAP = [
 
 def slackChannel = 's_test'
 
-def slackMessage = """
-Info: this is downstream
-Job: *${currentBuild.currentResult}*
-User: *${getBuildUser}*
-4......
-"""
 
 def getBuildUser() {
     if (currentBuild.rawBuild.getCause(Cause.UserIdCause)) {
@@ -32,6 +26,13 @@ def getBuildUser() {
         }
     }
 }
+
+def slackMessage = """
+Info: this is downstream
+Job: *${currentBuild.currentResult}*
+User: *${getBuildUser}*
+4......
+"""
 
 pipeline{
     agent any
