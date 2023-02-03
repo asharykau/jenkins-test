@@ -10,7 +10,7 @@ def EMOJI_MAP = [
     'ABORTED': 'heavy_multiplication_x',
 ]
 
-def SLACK_CHANNEL = 's_test'
+def slackChannel = 's_test'
 
 def getBuildUser() {
     if (currentBuild.rawBuild.getCause(Cause.UserIdCause)) {
@@ -28,8 +28,8 @@ pipeline{
         stage('Send slack notification') {
             steps {
                 script {
-                    slackNotify = slackSend(channel: "${SLACK_CHANNEL}", message: "Start Build")
-                    message_tread = slackNotify.threadId
+                    slackNotify = slackSend(channel: "${slackChannel}", message: "Start Build")
+                    messageTread = slackNotify.threadId
                     timestamp = slackNotify.ts
                 }
             }
@@ -39,8 +39,9 @@ pipeline{
             steps{
                 script{
                     echo "${getBuildUser()}"
+                    echo "${messageTread}"
                     build job: "Setrix/Production/test/downstream", parameters: [
-                        string(name: 'MESSASGE_TREAD', value: message_tread)]
+                        string(name: 'messageTread', value: messageTread)]
 
                 }
             }
@@ -59,6 +60,7 @@ pipeline{
         always {
             script {
                 EMOJI = EMOJI_MAP[currentBuild.currentResult]
+
                 slackNotify.addReaction(EMOJI_MAP[currentBuild.currentResult])
             }
         }
