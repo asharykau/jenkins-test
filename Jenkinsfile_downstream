@@ -6,7 +6,7 @@ def getBuildUser() {
             try {
                 return cause.getUserId() + " caused from upstream"
             } catch(Exception e) {
-                return "Sheduler"
+                return "Scheduler"
             }
         }
     }
@@ -17,9 +17,10 @@ pipeline{
 
     stages{
         stage('Print user info'){
-            steps{
+            steps{:w
                 script{
                     echo "${getBuildUser()}"
+                    echo "${SLACK_THREAD}"
                 }
             }
         }
