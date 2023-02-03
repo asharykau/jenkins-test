@@ -12,6 +12,13 @@ def EMOJI_MAP = [
 
 def slackChannel = 's_test'
 
+def slackMessage = """
+                        1. Info
+                        2. Time
+                        3. User
+                        4......
+                   """
+
 def getBuildUser() {
     if (currentBuild.rawBuild.getCause(Cause.UserIdCause)) {
         return currentBuild.rawBuild.getCause(Cause.UserIdCause).getUserId()
@@ -61,7 +68,7 @@ pipeline{
             script {
                 EMOJI = EMOJI_MAP[currentBuild.currentResult]
 
-                slackSend(channel: messageTread, message: "Job is done", timestamp: timestamp, color: COLOR_MAP[currentBuild.currentResult])
+                slackSend(channel: messageTread, message: slackMessage, timestamp: timestamp, color: COLOR_MAP[currentBuild.currentResult])
                 slackNotify.addReaction(EMOJI_MAP[currentBuild.currentResult])
             }
         }
