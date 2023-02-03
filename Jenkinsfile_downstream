@@ -1,3 +1,15 @@
+def COLOR_MAP = [
+    'SUCCESS': 'good',
+    'FAILURE': 'danger',
+    'ABORTED': 'warning',
+]
+
+def EMOJI_MAP = [
+    'SUCCESS': 'white_check_mark',
+    'FAILURE': 'x',
+    'ABORTED': 'heavy_multiplication_x',
+]
+
 def getBuildUser() {
     if (currentBuild.rawBuild.getCause(Cause.UserIdCause)) {
         return currentBuild.rawBuild.getCause(Cause.UserIdCause).getUserId()
@@ -30,6 +42,19 @@ pipeline{
                 script{
                     echo "Done downstream"
                 }
+            }
+        }
+    }
+    
+    post {
+        always {
+            script {
+                EMOJI = EMOJI_MAP[currentBuild.currentResult]
+                COLOR = COLOR_MAP[currentBuild.currentResult]
+
+                slackSend(channel: message_tread, message: "from downstream", timestamp: timestamp, color: COLOR_MAP[currentBuild.currentResult])
+
+                slackNotify.addReaction(EMOJI_MAP[currentBuild.currentResult])
             }
         }
     }
