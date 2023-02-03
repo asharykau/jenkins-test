@@ -32,6 +32,7 @@ pipeline{
             steps{
                 script{
                     echo "${getBuildUser()}"
+                    echo "${params.MESSAGE_TREAD}"
                 }
             }
         }
