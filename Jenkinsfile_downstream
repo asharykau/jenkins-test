@@ -17,7 +17,7 @@ pipeline{
 
     stages{
         stage('Print user info'){
-            steps{:w
+            steps{
                 script{
                     echo "${getBuildUser()}"
                     echo "${SLACK_THREAD}"

@@ -14,7 +14,7 @@ pipeline{
             steps{
                 script{
                     echo "${getBuildUser()}"
-                    build job: "Setrix/Production/test/downstream" parameters: [
+                    build job: "Setrix/Production/test/downstream", parameters: [
                         string(name: 'SLACK_THREAD', value: "thread")]
 
                 }
