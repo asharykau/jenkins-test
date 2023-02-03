@@ -61,6 +61,7 @@ pipeline{
             script {
                 EMOJI = EMOJI_MAP[currentBuild.currentResult]
 
+                slackSend(channel: sageTread message: "Job is done", timestamp: timestamp, color: COLOR_MAP[currentBuild.currentResult])
                 slackNotify.addReaction(EMOJI_MAP[currentBuild.currentResult])
             }
         }
