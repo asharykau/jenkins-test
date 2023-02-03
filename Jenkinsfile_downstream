@@ -3,7 +3,7 @@ def getBuildUser() {
         return currentBuild.rawBuild.getCause(Cause.UserIdCause).getUserId()
     } else {
         for (cause in currentBuild.rawBuild.getCause(Cause.UpstreamCause).getUpstreamCauses()) {
-            return cause.getUserId() + " caused from upstream"
+            return cause //getUserId() + " caused from upstream"
         }
     }
 }
