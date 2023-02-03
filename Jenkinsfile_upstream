@@ -1,0 +1,30 @@
+def getBuildUser() {
+    if (currentBuild.rawBuild.getCause(Cause.UserIdCause)) {
+        return currentBuild.rawBuild.getCause(Cause.UserIdCause).getUserId()
+    } else {
+        return false
+    }
+}
+
+pipeline{
+    agent any
+
+    stages{
+        stage('Run Downstream'){
+            steps{
+                script{
+                    echo "${getBuildUser()}"
+                    build job: "Setrix/Production/test/downstream"
+                }
+            }
+        }
+
+        stage('Done upstream'){
+            steps{
+                script{
+                    echo "Done upstream"
+                }
+            }
+        }
+    }
+}

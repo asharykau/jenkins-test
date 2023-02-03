@@ -1,0 +1,31 @@
+def getBuildUser() {
+    if (currentBuild.rawBuild.getCause(Cause.UserIdCause)) {
+        return currentBuild.rawBuild.getCause(Cause.UserIdCause).getUserId()
+    } else {
+        for (cause in currentBuild.rawBuild.getCause(Cause.UpstreamCause).getUpstreamCauses()) {
+            return cause.getUserId() + " caused from upstream"
+        }
+    }
+}
+
+pipeline{
+    agent any
+
+    stages{
+        stage('Print user info'){
+            steps{
+                script{
+                    echo "${getBuildUser()}"
+                }
+            }
+        }
+
+        stage('Done downsream'){
+            steps{
+                script{
+                    echo "Done downstream"
+                }
+            }
+        }
+    }
+}
