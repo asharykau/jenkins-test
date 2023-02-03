@@ -10,7 +10,14 @@ def EMOJI_MAP = [
     'ABORTED': 'heavy_multiplication_x',
 ]
 
-def slackChannel = ''
+def slackChannel = 's_test'
+
+def slackMessage = """
+Info: this is downstream
+Job: *${currentBuild.currentResult}*
+User: *${getBuildUser}*
+4......
+"""
 
 def getBuildUser() {
     if (currentBuild.rawBuild.getCause(Cause.UserIdCause)) {
@@ -34,8 +41,6 @@ pipeline{
             steps{
                 script{
                     echo "${getBuildUser()}"
-                    slackChannel = params.messageTread
-                    echo "${slackChannel}"
                 }
             }
         }
@@ -53,8 +58,12 @@ pipeline{
         always {
             script {
                 COLOR = COLOR_MAP[currentBuild.currentResult]
-
-                slackSend(channel: slackChannel, message: "from downstream", color: COLOR_MAP[currentBuild.currentResult])
+                
+                if (params.slackChannel) {
+                    slackChannel = params.slackChannel
+                }
+                    
+                slackSend(channel: slackChannel, message: slackMessage, color: COLOR_MAP[currentBuild.currentResult])
             }
         }
     }
