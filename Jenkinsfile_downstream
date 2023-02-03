@@ -20,7 +20,7 @@ pipeline{
             steps{
                 script{
                     echo "${getBuildUser()}"
-                    echo "${SLACK_THREAD}"
+                    echo "${params.SLACK_THREAD}"
                 }
             }
         }
