@@ -10,6 +10,8 @@ def EMOJI_MAP = [
     'ABORTED': 'heavy_multiplication_x',
 ]
 
+def SLACK_CHANNEL = ''
+
 def getBuildUser() {
     if (currentBuild.rawBuild.getCause(Cause.UserIdCause)) {
         return currentBuild.rawBuild.getCause(Cause.UserIdCause).getUserId()
@@ -32,7 +34,8 @@ pipeline{
             steps{
                 script{
                     echo "${getBuildUser()}"
-                    echo "${params.MESSAGE_TREAD}"
+                    SLACK_CHANNEL = params.MESSAGE_TREAD
+                    echo "${SLACK_CHANNEL}"
                 }
             }
         }
@@ -51,7 +54,7 @@ pipeline{
             script {
                 COLOR = COLOR_MAP[currentBuild.currentResult]
 
-                slackSend(channel: "${params.MESSAGE_TREAD}", message: "from downstream", color: COLOR_MAP[currentBuild.currentResult])
+                slackSend(channel: SLACK_CHANNEL, message: "from downstream", color: COLOR_MAP[currentBuild.currentResult])
             }
         }
     }

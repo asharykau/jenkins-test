@@ -40,7 +40,7 @@ pipeline{
                 script{
                     echo "${getBuildUser()}"
                     build job: "Setrix/Production/test/downstream", parameters: [
-                        string(name: 'MESSASGE_TREAD', value: "${message_tread}")]
+                        string(name: 'MESSASGE_TREAD', value: message_tread)]
 
                 }
             }
