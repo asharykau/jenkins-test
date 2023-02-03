@@ -3,7 +3,11 @@ def getBuildUser() {
         return currentBuild.rawBuild.getCause(Cause.UserIdCause).getUserId()
     } else {
         for (cause in currentBuild.rawBuild.getCause(Cause.UpstreamCause).getUpstreamCauses()) {
-            return cause //getUserId() + " caused from upstream"
+            try {
+                return cause.getUserId() + " caused from upstream"
+            } catch(Exeption ex) {
+                return "Sheduler"
+            }
         }
     }
 }
