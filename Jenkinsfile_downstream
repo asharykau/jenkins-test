@@ -12,14 +12,14 @@ def emoji_map = [
 
 def slackStartMessage = """
 Info: Starting buld
-Job: ${env.BUILD_URL}
+${env.BUILD_URL}
 User: *${getBuildUser()}*
 """
 
 def slackEndMessage = """
 Info: Ended build
 Status: *${currentBuild.currentResult}*
-Job: *${env.BUILD_URL}*
+${env.BUILD_URL}
 User: *${getBuildUser()}*
 """
 
@@ -65,7 +65,8 @@ pipeline{
             steps{
                 script{
                     echo "${getBuildUser()}"
-                    echo "${timestamp}"
+                    echo "${slackChannel}"
+                    sleep 3
                 }
             }
         }

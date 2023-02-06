@@ -12,14 +12,14 @@ def emoji_map = [
 
 def slackStartMessage = """
 Info: Start notifications test on Jenkins
-Job: *${env.BUILD_URL}*
+${env.BUILD_URL}
 User: *${getBuildUser()}*
 """
 
 def slackEndMessage = """
 Info: Ended build
 Status: *${currentBuild.currentResult}*
-Job: ${env.BUILD_URL}
+${env.BUILD_URL}
 User: *${getBuildUser()}*
 """
 
