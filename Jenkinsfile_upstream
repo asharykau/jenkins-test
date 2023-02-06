@@ -41,7 +41,7 @@ pipeline{
         stage('Send slack notification') {
             steps {
                 script {
-                    slackNotify = slackSend(channel: getSlackChannel(), message: "Start Build")
+                    slackNotify = slackSend(channel: getSlackChannel(), message: "Start pipeline")
                 }
             }
         }
