@@ -24,10 +24,10 @@ ${env.BUILD_URL}${getBuildUser()}
 def slackChannel = getSlackChannel()
 
 def getSlackChannel() {
-    try {
+    if (params.messageThread == null) {
+        return "s_test"        
+    } else {
         return params.messageThread
-    } catch(Exception e) {
-        return "s_test"
     }
 }
 
