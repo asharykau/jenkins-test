@@ -10,11 +10,17 @@ def emoji_map = [
     'ABORTED': 'heavy_multiplication_x',
 ]
 
-def slackMessage = """
-Info: this is downstream
-Job: *${currentBuild.currentResult}*
+def slackStartMessage = """
+Info: Starting buld
+Job: *${env.BUILD_URL}*
 User: *${getBuildUser()}*
-4......
+"""
+
+def slackEndMessage = """
+Info: Ended build
+Status: *${currentBuild.currentResult}*
+Job: *${env.BUILD_URL}*
+User: *${getBuildUser()}*
 """
 
 def slackChannel = 's_test'
@@ -48,7 +54,7 @@ pipeline{
             steps {
                 script {
                     checkSlackChannle();
-                    slackNotify = slackSend(channel: slackChannel, message: slackMessage)
+                    slackNotify = slackSend(channel: slackChannel, message: slackStartMessage)
                     slackChannel = slackNotify.threadId
                     timestamp = slackNotify.ts
                 }
@@ -59,7 +65,7 @@ pipeline{
             steps{
                 script{
                     echo "${getBuildUser()}"
-                    echo "${getSlackChannel()}"
+                    echo "${timestamp}"
                 }
             }
         }
@@ -76,7 +82,7 @@ pipeline{
     post {
         always {
             script {
-                slackSend(channel: slackChannel, message: slackMessage, timestamp: timestamp, color: color_map[currentBuild.currentResult])
+                slackSend(channel: slackChannel, message: slackEndMessage, timestamp: timestamp, color: color_map[currentBuild.currentResult])
                 slackNotify.addReaction(emoji_map[currentBuild.currentResult])
             }
         }
