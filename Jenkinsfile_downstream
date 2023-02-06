@@ -12,15 +12,13 @@ def emoji_map = [
 
 def slackStartMessage = """
 Info: Starting buld
-${env.BUILD_URL}
-User: *${getBuildUser()}*
+${env.BUILD_URL}${getBuildUser()}
 """
 
 def slackEndMessage = """
 Info: Ended build
 Status: *${currentBuild.currentResult}*
-${env.BUILD_URL}
-User: *${getBuildUser()}*
+${env.BUILD_URL}${getBuildUser()}
 """
 
 def slackChannel = 's_test'
@@ -32,16 +30,8 @@ def checkSlackChannel() {
 }
 
 def getBuildUser() {
-    if (currentBuild.rawBuild.getCause(Cause.UserIdCause)) {
-        return currentBuild.rawBuild.getCause(Cause.UserIdCause).getUserId()
-    } else {
-        for (cause in currentBuild.rawBuild.getCause(Cause.UpstreamCause).getUpstreamCauses()) {
-            try {
-                return cause.getUserId() + " caused from upstream"
-            } catch(Exception e) {
-                return "Scheduler"
-            }
-        }
+    try {
+        return "\nUser: *${currentBuild.rawBuild.getCause(Cause.UserIdCause).getUserId()}*"
     }
 }
 

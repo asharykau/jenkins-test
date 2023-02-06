@@ -12,15 +12,13 @@ def emoji_map = [
 
 def slackStartMessage = """
 Info: Start notifications test on Jenkins
-${env.BUILD_URL}
-User: *${getBuildUser()}*
+${env.BUILD_URL}${getBuildUser()}
 """
 
 def slackEndMessage = """
 Info: Ended build
 Status: *${currentBuild.currentResult}*
-${env.BUILD_URL}
-User: *${getBuildUser()}*
+${env.BUILD_URL}${getBuildUser()}
 """
 
 def slackChannel = 's_test'
@@ -32,10 +30,8 @@ def checkSlackChannel() {
 }
 
 def getBuildUser() {
-    if (currentBuild.rawBuild.getCause(Cause.UserIdCause)) {
-        return currentBuild.rawBuild.getCause(Cause.UserIdCause).getUserId()
-    } else {
-        return false
+    try {
+        return "\nUser: *${currentBuild.rawBuild.getCause(Cause.UserIdCause).getUserId()}*"
     }
 }
 
@@ -59,9 +55,10 @@ pipeline{
         stage('Run Downstream'){
             steps{
                 script{
+                    sleep 3
                     echo "${getBuildUser()}"
                     build job: "Setrix/Production/test/downstream", parameters: [
-                        string(name: 'messageTread', value: slackChannel)]
+                        string(name: 'messageThread', value: slackChannel)]
 
                 }
             }
