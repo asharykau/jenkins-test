@@ -32,6 +32,8 @@ def checkSlackChannel() {
 def getBuildUser() {
     try {
         return "\nUser: *${currentBuild.rawBuild.getCause(Cause.UserIdCause).getUserId()}*"
+    } catch(Exception e) {
+        return ""
     }
 }
 
