@@ -50,7 +50,6 @@ pipeline{
             steps{
                 script{
                     echo "${getBuildUser()}"
-                    echo "${messageTread}"
                     build job: "Setrix/Production/test/downstream", parameters: [
                         string(name: 'messageTread', value: slackNotify.threadId)]
 
