@@ -18,8 +18,8 @@ User: *${getBuildUser()}*
 """
 
 def getSlackChannel() {
-    if (params.messageTtread) {
-        return params.messageTtread
+    if (params.messageTread) {
+        return params.messageTread
     }
     return 's_test'
 }
@@ -47,6 +47,7 @@ pipeline{
             steps {
                 script {
                     slackNotify = slackSend(channel: getSlackChannel(), message: "Start Build")
+                    timestamp = slackNotify.ts
                 }
             }
         }
@@ -72,7 +73,7 @@ pipeline{
     post {
         always {
             script {
-                slackSend(channel: getSlackChannel(), message: slackMessage, timestamp: slackNotify.ts, ccolor: color_map[currentBuild.currentResult])
+                slackSend(channel: getSlackChannel(), message: slackMessage, timestamp: timestamp, ccolor: color_map[currentBuild.currentResult])
                 slackNotify.addReaction(emoji_map[currentBuild.currentResult])
             }
         }
