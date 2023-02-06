@@ -19,7 +19,7 @@ User: *${getBuildUser()}*
 
 def getSlackChannel() {
     try {
-        return params.messageTread
+        return params.myTread
     } catch(Exception e) {
         return 's_test'
     }
