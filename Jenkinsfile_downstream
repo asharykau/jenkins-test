@@ -19,7 +19,6 @@ User: *${getBuildUser()}*
 
 def slackChannel = 's_test'
 
-
 def checkSlackChannel() {
     if (params.messageThread) {
         slackChannel = params.messageThread
