@@ -17,11 +17,12 @@ User: *${getBuildUser()}*
 4......
 """
 
-def getSlackChannel() {
-    if (params.myTtread) {
-        return params.messageTtread
+def slackChannel = 's_test"
+
+def checkSlackChannel() {
+    if (params.messageThread) {
+        slackChannel = params.messageThread
     }
-    return 's_test'
 }
 
 def getBuildUser() {
@@ -41,7 +42,9 @@ pipeline{
         stage('Send slack notification') {
             steps {
                 script {
-                    slackNotify = slackSend(channel: getSlackChannel(), message: "Start pipeline")
+                    checkSlackChannel()
+                    slackNotify = slackSend(channel: slackChannel, message: slackMessage)
+                    slackChannel = slackNotify.threadId
                     timestamp = slackNotify.ts
                 }
             }
@@ -52,7 +55,7 @@ pipeline{
                 script{
                     echo "${getBuildUser()}"
                     build job: "Setrix/Production/test/downstream", parameters: [
-                        string(name: 'messageTread', value: slackNotify.threadId)]
+                        string(name: 'messageTread', value: slackChannel)]
 
                 }
             }
@@ -70,7 +73,7 @@ pipeline{
     post {
         always {
             script {
-                slackSend(channel: getSlackChannel(), message: slackMessage, timestamp: timestamp, color: color_map[currentBuild.currentResult])
+                slackSend(channel: slackChannel, message: slackMessage, timestamp: timestamp, color: color_map[currentBuild.currentResult])
                 slackNotify.addReaction(emoji_map[currentBuild.currentResult])
             }
         }
