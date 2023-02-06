@@ -45,7 +45,10 @@ pipeline{
         stage('Send slack notification') {
             steps {
                 script {
+                    echo "${slackChannel}"
+                    echo "${params.messageThread}"
                     checkSlackChannel()
+                    echo "${slackChannel}"
                     slackNotify = slackSend(channel: slackChannel, message: slackStartMessage)
                     slackChannel = slackNotify.threadId
                     timestamp = slackNotify.ts
