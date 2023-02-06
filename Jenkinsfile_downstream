@@ -55,7 +55,7 @@ pipeline{
             steps{
                 script{
                     echo "${getBuildUser()}"
-                    echo "${getSlackMessage()}"
+                    echo "${getSlackChannel()}"
                 }
             }
         }
