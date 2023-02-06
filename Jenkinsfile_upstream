@@ -21,11 +21,13 @@ Status: *${currentBuild.currentResult}*
 ${env.BUILD_URL}${getBuildUser()}
 """
 
-def slackChannel = 's_test'
+def slackChannel = getSlackChannel()
 
-def checkSlackChannel() {
-    if (params.messageThread != null) {
-        slackChannel = params.messageThread
+def getSlackChannel() {
+    try {
+        return params.messageThread
+    } catch(Exception e) {
+        return "s_test"
     }
 }
 
@@ -45,7 +47,6 @@ pipeline{
         stage('Send slack notification') {
             steps {
                 script {
-                    checkSlackChannel()
                     slackNotify = slackSend(channel: slackChannel, message: slackStartMessage)
                     slackChannel = slackNotify.threadId
                     timestamp = slackNotify.ts
@@ -58,6 +59,7 @@ pipeline{
                 script{
                     sleep 3
                     echo "${getBuildUser()}"
+
                     build job: "Setrix/Production/test/downstream", parameters: [
                         string(name: 'messageThread', value: slackChannel)]
 
