@@ -73,7 +73,7 @@ pipeline{
     post {
         always {
             script {
-                slackSend(channel: getSlackChannel(), message: slackMessage, timestamp: timestamp, ccolor: color_map[currentBuild.currentResult])
+                slackSend(channel: getSlackChannel(), message: slackMessage, timestamp: timestamp, color: color_map[currentBuild.currentResult])
                 slackNotify.addReaction(emoji_map[currentBuild.currentResult])
             }
         }
