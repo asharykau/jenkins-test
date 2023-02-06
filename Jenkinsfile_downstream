@@ -1,16 +1,14 @@
-def COLOR_MAP = [
+def color_map = [
     'SUCCESS': 'good',
     'FAILURE': 'danger',
     'ABORTED': 'warning',
 ]
 
-def EMOJI_MAP = [
+def emoji_map = [
     'SUCCESS': 'white_check_mark',
     'FAILURE': 'x',
     'ABORTED': 'heavy_multiplication_x',
 ]
-
-def slackChannel = 's_test'
 
 def slackMessage = """
 Info: this is downstream
@@ -18,6 +16,13 @@ Job: *${currentBuild.currentResult}*
 User: *${getBuildUser()}*
 4......
 """
+
+def getSlackChannel() {
+    if (params.messageTread) {
+        return params.messageTread
+    }
+    return 's_test'
+}
 
 def getBuildUser() {
     if (currentBuild.rawBuild.getCause(Cause.UserIdCause)) {
@@ -38,6 +43,14 @@ pipeline{
     agent any
 
     stages{
+        stage('Send slack notification') {
+            steps {
+                script {
+                    slackNotify = slackSend(channel: getSlackChannel(), message: "Start Build")
+                }
+            }
+        }
+
         stage('Print user info'){
             steps{
                 script{
@@ -58,13 +71,8 @@ pipeline{
     post {
         always {
             script {
-                COLOR = COLOR_MAP[currentBuild.currentResult]
-                
-                if (params.slackChannel) {
-                    slackChannel = params.slackChannel
-                }
-                    
-                slackSend(channel: slackChannel, message: slackMessage, color: COLOR_MAP[currentBuild.currentResult])
+                slackSend(channel: getSlackChannel(), message: slackMessage, timestamp: slackNotify.ts, ccolor: color_map[currentBuild.currentResult])
+                slackNotify.addReaction(emoji_map[currentBuild.currentResult])
             }
         }
     }

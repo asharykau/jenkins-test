@@ -1,16 +1,14 @@
-def COLOR_MAP = [
+def color_map = [
     'SUCCESS': 'good',
     'FAILURE': 'danger',
     'ABORTED': 'warning',
 ]
 
-def EMOJI_MAP = [
+def emoji_map = [
     'SUCCESS': 'white_check_mark',
     'FAILURE': 'x',
     'ABORTED': 'heavy_multiplication_x',
 ]
-
-def slackChannel = 's_test'
 
 def slackMessage = """
 Info: test slack message on Jenkins
@@ -18,6 +16,13 @@ Job: *${currentBuild.currentResult}*
 User: *${getBuildUser()}*
 4......
 """
+
+def getSlackChannel() {
+    if (params.messageTread) {
+        return params.messageTread
+    }
+    return 's_test'
+}
 
 def getBuildUser() {
     if (currentBuild.rawBuild.getCause(Cause.UserIdCause)) {
@@ -36,9 +41,7 @@ pipeline{
         stage('Send slack notification') {
             steps {
                 script {
-                    slackNotify = slackSend(channel: "${slackChannel}", message: "Start Build")
-                    messageTread = slackNotify.threadId
-                    timestamp = slackNotify.ts
+                    slackNotify = slackSend(channel: getSlackChannel(), message: "Start Build")
                 }
             }
         }
@@ -49,7 +52,7 @@ pipeline{
                     echo "${getBuildUser()}"
                     echo "${messageTread}"
                     build job: "Setrix/Production/test/downstream", parameters: [
-                        string(name: 'messageTread', value: messageTread)]
+                        string(name: 'messageTread', value: slackNotify.threadId)]
 
                 }
             }
@@ -67,10 +70,8 @@ pipeline{
     post {
         always {
             script {
-                EMOJI = EMOJI_MAP[currentBuild.currentResult]
-
-                slackSend(channel: messageTread, message: slackMessage, timestamp: timestamp, color: COLOR_MAP[currentBuild.currentResult])
-                slackNotify.addReaction(EMOJI_MAP[currentBuild.currentResult])
+                slackSend(channel: getSlackChannel(), message: slackMessage, timestamp: slackNotify.ts, color: color_map[currentBuild.currentResult]
+                slackNotify.addReaction(emoji_map[currentBuild.currentResult])
             }
         }
     }
