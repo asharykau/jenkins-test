@@ -24,7 +24,7 @@ ${env.BUILD_URL}${getBuildUser()}
 def slackChannel = 's_test'
 
 def checkSlackChannel() {
-    if (params.messageThread) {
+    if (params.messageThread != null) {
         slackChannel = params.messageThread
     }
 }
