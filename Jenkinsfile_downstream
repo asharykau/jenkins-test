@@ -12,13 +12,15 @@ def emoji_map = [
 
 def slackStartMessage = """
 Info: Starting buld
-${env.BUILD_URL}${getBuildUser()}
+${env.BUILD_URL}
+${getBuildUser()}
 """
 
 def slackEndMessage = """
 Info: Ended build
 Status: *${currentBuild.currentResult}*
-${env.BUILD_URL}${getBuildUser()}
+${env.BUILD_URL}
+${getBuildUser()}
 """
 
 def slackChannel = getSlackChannel()
@@ -47,12 +49,9 @@ pipeline{
         stage('Send slack notification') {
             steps {
                 script {
-                    echo "${slackChannel}"
-                    echo "${params.messageThread}"
                     slackNotify = slackSend(channel: slackChannel, message: slackStartMessage)
                     slackChannel = slackNotify.threadId
                     timestamp = slackNotify.ts
-                    echo "${params.messageThread}"
                 }
             }
         }
@@ -60,8 +59,6 @@ pipeline{
         stage('Print user info'){
             steps{
                 script{
-                    echo "${getBuildUser()}"
-                    echo "${slackChannel}"
                     sleep 3
                 }
             }
