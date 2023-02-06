@@ -19,7 +19,7 @@ User: *${getBuildUser()}*
 def slackEndMessage = """
 Info: Ended build
 Status: *${currentBuild.currentResult}*
-Job: *${env.BUILD_URL}*
+Job: ${env.BUILD_URL}
 User: *${getBuildUser()}*
 """
 

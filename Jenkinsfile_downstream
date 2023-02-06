@@ -12,7 +12,7 @@ def emoji_map = [
 
 def slackStartMessage = """
 Info: Starting buld
-Job: *${env.BUILD_URL}*
+Job: ${env.BUILD_URL}
 User: *${getBuildUser()}*
 """
 
@@ -53,7 +53,7 @@ pipeline{
         stage('Send slack notification') {
             steps {
                 script {
-                    checkSlackChannle();
+                    checkSlackChannel()
                     slackNotify = slackSend(channel: slackChannel, message: slackStartMessage)
                     slackChannel = slackNotify.threadId
                     timestamp = slackNotify.ts
