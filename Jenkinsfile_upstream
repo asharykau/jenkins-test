@@ -18,11 +18,10 @@ User: *${getBuildUser()}*
 """
 
 def getSlackChannel() {
-    try {
-        return params.myTtread
-    } catch(Exception e) {
-        return 's_test'
+    if (params.myTtread) {
+        return params.messageTtread
     }
+    return 's_test'
 }
 
 def getBuildUser() {
@@ -53,7 +52,7 @@ pipeline{
                     echo "${getBuildUser()}"
                     echo "${messageTread}"
                     build job: "Setrix/Production/test/downstream", parameters: [
-                        string(name: 'myTread', value: slackNotify.threadId)]
+                        string(name: 'messageTread', value: slackNotify.threadId)]
 
                 }
             }

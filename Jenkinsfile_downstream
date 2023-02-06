@@ -18,11 +18,10 @@ User: *${getBuildUser()}*
 """
 
 def getSlackChannel() {
-    try {
-        return params.myTread
-    } catch(Exception e) {
-        return 's_test'
+    if (params.myTtread) {
+        return params.messageTtread
     }
+    return 's_test'
 }
 
 def getBuildUser() {
