@@ -45,7 +45,7 @@ pipeline{
 
                     slackNotify = slackSend(channel: slackChannel, message: message())
                     slackChannel = slackNotify.threadId
-                    timestamp = slackNotify.ts
+                    def timestamp = slackNotify.ts
                 }
             }
         }
