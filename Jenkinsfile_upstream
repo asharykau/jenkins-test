@@ -71,7 +71,7 @@ pipeline{
             script {
                 def message = "Info: Ended build\nStatus: *${currentBuild.currentResult}*\n${env.BUILD_URL}\n${getBuildUser()}"
 
-                slackSend(channel: slackChannel, message: message, timestanp: timestamp, color: color_map[currentBuild.currentResult])
+                slackSend(channel: slackChannel, message: message, timestamp: timestamp, color: color_map[currentBuild.currentResult])
                 slackNotify.addReaction(emoji_map[currentBuild.currentResult])
             }
         }
