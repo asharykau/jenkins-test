@@ -71,8 +71,8 @@ pipeline{
     post {
         always {
             script {
-                echo "${getDockerImage()}"
-                def message = "Info: Ended build\nStatus: *${currentBuild.currentResult}*\n${env.BUILD_URL}\n*${getDockerImage()}*\n${getBuildUser()}"
+                echo "${dockerImage()}"
+                def message = "Info: Ended build\nStatus: *${currentBuild.currentResult}*\n${env.BUILD_URL}\n*${dockerImage()}*\n${getBuildUser()}"
 
                 slackSend(channel: slackChannel, message: message, timestamp: timestamp, color: color_map[currentBuild.currentResult])
                 slackNotify.addReaction(emoji_map[currentBuild.currentResult])
