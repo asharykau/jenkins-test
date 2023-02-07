@@ -12,6 +12,11 @@ def emoji_map = [
     'ABORTED': 'heavy_multiplication_x',
 ]
 
+
+def getDockerImage() {
+    return dockerImage
+}
+
 def getSlackStartMessage() {
 return """
 Info: Starting buld
@@ -25,10 +30,12 @@ return """
 Info: Ended build
 Status: *${currentBuild.currentResult}*
 ${env.BUILD_URL}
-*${dockerImage}*
+*${getDockerImage()}*
 ${getBuildUser()}
 """
 }
+
+
 
 def slackChannel = getSlackChannel()
 
@@ -86,7 +93,7 @@ pipeline{
     post {
         always {
             script {
-                echo "${dockerImage}"
+                echo "${getDockerImage()}"
                 slackSend(channel: slackChannel, message: getSlackEndMessage(), timestamp: timestamp, color: color_map[currentBuild.currentResult])
                 slackNotify.addReaction(emoji_map[currentBuild.currentResult])
             }
