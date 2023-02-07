@@ -43,9 +43,9 @@ pipeline{
                 script {
                     def message = "Info: Starting buld\n${env.BUILD_URL}\n${getBuildUser()}"
 
-                    slackNotify = slackSend(channel: slackChannel, message: message())
+                    slackNotify = slackSend(channel: slackChannel, message: message)
                     slackChannel = slackNotify.threadId
-                    def timestamp = slackNotify.ts
+                    timestamp = slackNotify.ts
                 }
             }
         }
