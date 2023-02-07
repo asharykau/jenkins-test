@@ -13,30 +13,6 @@ def emoji_map = [
 ]
 
 
-def getDockerImage() {
-    return dockerImage
-}
-
-def getSlackStartMessage() {
-return """
-Info: Starting buld
-${env.BUILD_URL}
-${getBuildUser()}
-"""
-}
-
-def getSlackEndMessage() { 
-return """
-Info: Ended build
-Status: *${currentBuild.currentResult}*
-${env.BUILD_URL}
-*${getDockerImage()}*
-${getBuildUser()}
-"""
-}
-
-
-
 def slackChannel = getSlackChannel()
 
 def getSlackChannel() {
@@ -65,7 +41,9 @@ pipeline{
         stage('Send slack notification') {
             steps {
                 script {
-                    slackNotify = slackSend(channel: slackChannel, message: getSlackStartMessage())
+                    def message = "Info: Starting buld\n${env.BUILD_URL}\n${getBuildUser()}"
+
+                    slackNotify = slackSend(channel: slackChannel, message: message())
                     slackChannel = slackNotify.threadId
                     timestamp = slackNotify.ts
                 }
@@ -94,7 +72,9 @@ pipeline{
         always {
             script {
                 echo "${getDockerImage()}"
-                slackSend(channel: slackChannel, message: getSlackEndMessage(), timestamp: timestamp, color: color_map[currentBuild.currentResult])
+                def message = "Info: Ended build\nStatus: *${currentBuild.currentResult}*\n${env.BUILD_URL}\n*${getDockerImage()}*\n${getBuildUser()}"
+
+                slackSend(channel: slackChannel, message: message, timestamp: timestamp, color: color_map[currentBuild.currentResult])
                 slackNotify.addReaction(emoji_map[currentBuild.currentResult])
             }
         }
