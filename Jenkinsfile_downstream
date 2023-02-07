@@ -20,6 +20,7 @@ def slackEndMessage = """
 Info: Ended build
 Status: *${currentBuild.currentResult}*
 ${env.BUILD_URL}
+*${dockerImage}*
 ${getBuildUser()}
 """
 
@@ -41,6 +42,9 @@ def getBuildUser() {
     }
 }
 
+
+
+def dockerImage = ""
 
 pipeline{
     agent any
@@ -68,6 +72,7 @@ pipeline{
             steps{
                 script{
                     echo "Done downstream"
+                    dockerImage = "test image"
                 }
             }
         }
