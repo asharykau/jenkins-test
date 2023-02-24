@@ -43,7 +43,7 @@ pipeline{
                 script{
                     sleep 3
                     echo "Run DOWNSTREAM"
-                    echo ${bad_var}
+                    echo '${bad_var}'
                 }
             }
         }
