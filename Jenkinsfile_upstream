@@ -43,8 +43,7 @@ pipeline{
             steps{
                 script{
                     sleep 3
-                    echo '${bad_variable}'
-
+                    build job: "Setrix/Production/test/downstream"
                 }
             }
         }

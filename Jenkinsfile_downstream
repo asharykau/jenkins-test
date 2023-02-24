@@ -38,22 +38,12 @@ pipeline{
     agent any
 
     stages{
-        stage('Send slack notification') {
-            steps {
-                script {
-                    def message = "Info: Starting buld\n${env.BUILD_URL}\n${getBuildUser()}"
-
-                    slackNotify = slackSend(channel: slackChannel, message: message)
-                    slackChannel = slackNotify.threadId
-                    timestamp = slackNotify.ts
-                }
-            }
-        }
-
         stage('Print user info'){
             steps{
                 script{
                     sleep 3
+                    echo "Run DOWNSTREAM"
+                    echo ${bad_var}
                 }
             }
         }
@@ -68,15 +58,4 @@ pipeline{
         }
     }
     
-    post {
-        always {
-            script {
-                echo "${dockerImage}"
-                def message = "Info: Ended build\nStatus: *${currentBuild.currentResult}*\n${env.BUILD_URL}\n*${dockerImage}*\n${getBuildUser()}"
-
-                slackSend(channel: slackChannel, message: message, timestamp: timestamp, color: color_map[currentBuild.currentResult])
-                slackNotify.addReaction(emoji_map[currentBuild.currentResult])
-            }
-        }
-    }
 }
