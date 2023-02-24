@@ -32,26 +32,18 @@ def getBuildUser() {
 pipeline{
     agent any
 
-    stages{
-        stage('Send slack notification') {
-            steps {
-                script {
-                    def message = "Info: Start notifications test on Jenkins\n${env.BUILD_URL}\n${getBuildUser()}\n"
+    options {
+        retry(1)
+    }
 
-                    slackNotify = slackSend(channel: slackChannel, message: message)
-                    slackChannel = slackNotify.threadId
-                    def timestamp = slackNotify.ts
-                }
-            }
-        }
+
+    stages{
         
         stage('Run Downstream'){
             steps{
                 script{
                     sleep 3
-
-                    build job: "Setrix/Production/test/downstream", parameters: [
-                        string(name: 'messageThread', value: slackChannel)]
+                    echo '${bad_variable}'
 
                 }
             }
@@ -69,10 +61,6 @@ pipeline{
     post {
         always {
             script {
-                def message = "Info: Ended build\nStatus: *${currentBuild.currentResult}*\n${env.BUILD_URL}\n${getBuildUser()}"
-
-                slackSend(channel: slackChannel, message: message, timestamp: timestamp, color: color_map[currentBuild.currentResult])
-                slackNotify.addReaction(emoji_map[currentBuild.currentResult])
             }
         }
     }
