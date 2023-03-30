@@ -8,9 +8,8 @@ def CLIENT_NAME = [
              ]
 ]
 
-pipeline{
-    agent { label 'deploy' }
 
+properties([
     parameters([
         [$class: 'ChoiceParameter',
             choiceType: 'PT_SINGLE_SELECT',
@@ -93,7 +92,10 @@ pipeline{
             ]
         ]
     ])
-        
+])
+
+pipeline{
+    agent { label 'deploy' }
 
     stages{
         
