@@ -1,0 +1,111 @@
+def CLIENT_NAME = [
+    'Select':[],
+    'Cygnus':[  'instance':['cygnus-instance-1','cygnus-instance-2'],
+                'app':['streampool']
+             ],  
+    'Camtel':[  'instance':['camtel-instance-1','camtel-instance-2'],
+                'app':['streampool', 'packager']
+             ]
+]
+
+pipeline{
+    agent(label : deploy)
+
+    parameters([
+        [$class: 'ChoiceParameter',
+            choiceType: 'PT_SINGLE_SELECT',
+            description: 'Select a CLIENT for deploy services',
+            filterLength: 3,
+            filterable: false,
+            name: 'CLIENT',
+            script: [$class: 'GroovyScript',
+                fallbackScript: [
+                    classpath: [],
+                    sandbox: true,
+                    script: 'return ["ERROR"]'
+                ],
+                script:[
+                    classpath: [],
+                    sandbox: true,
+                    script: """
+                        def CLIENT_NAME = ${CLIENT_NAME.inspect()}
+                        return CLIENT_NAME.keySet() as List
+                    """
+                ]
+            ]
+        ],
+        [$class: 'CascadeChoiceParameter',
+            choiceType: 'PT_CHECKBOX'
+            description: 'Select a INSTANCE',
+            filterLength: 1,
+            filterable: true,
+            name: 'INSTANCE',
+            referencedParameters: 'CLIENT',
+            script: [$class: 'GroovyScript',
+                fallbackScript: [
+                    classpath: [],
+                    sandbox: true,
+                    script: 'return ["ERROR"]'
+                ],
+                script: [
+                    classpath: [],
+                    sandbox: true,
+                    script: """
+                        switch(CLIENT) {
+                          case ~/.*/:
+                            def CLIENT_NAME = ${CLIENT_NAME.inspect()}
+                            return  CLIENT_NAME[CLIENT].instance
+                            break;
+                          default:
+                            return["ERROR"]
+                        }
+                    """.stripIndent()
+                ]
+            ]
+        ],
+        [$class: 'CascadeChoiceParameter',
+            choiceType: 'PT_CHECKBOX'
+            description: 'Select a APPLICATION for deploy',
+            filterLength: 1,
+            filterable: true,
+            name: 'APPLICATION',
+            referencedParameters: 'CLIENT',
+            script: [$class: 'GroovyScript',
+                fallbackScript: [
+                    classpath: [],
+                    sandbox: true,
+                    script: 'return ["ERROR"]'
+                ],
+                script: [
+                    classpath: [],
+                    sandbox: true,
+                    script: """
+                        switch(CLIENT) {
+                          case ~/.*/:
+                            def CLIENT_NAME = ${CLIENT_NAME.inspect()}
+                            return  CLIENT_NAME[CLIENT].app
+                            break;
+                          default:
+                            return["ERROR"]
+                        }
+                    """.stripIndent()
+                ]
+            ]
+        ]
+    ])
+        
+
+    stages{
+        
+        stage('Run Deploy'){
+            steps{
+                script{
+                    sleep 3
+                    build job: "Setrix/Production/test/downstream"
+                }
+            }
+        }
+
+    }
+
+}
