@@ -105,9 +105,14 @@ pipeline{
         stage('Run Deploy'){
             steps{
                 script{
-                    echo "${params.CLIENT}"
-                    echo "${params.INSTANCE}"
-                    echo "${params.APPLICATION}"
+                    echo "Start deploy service"
+                    echo "Client: ${params.CLIENT}"
+                    echo "Instances: ${params.INSTANCE}"
+                    echo "Applications: ${params.APPLICATION}"
+
+                    if (INSTANCE && APPLICATION) {
+                        echo "start"
+                    }
                 }
             }
         }
