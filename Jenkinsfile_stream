@@ -5,6 +5,9 @@ def CLIENT_NAME = [
              ],  
     'Camtel':[  'instance':['camtel-instance-1','camtel-instance-2'],
                 'app':['streampool', 'packager']
+             ],
+    'Camtel2':[  'instance':['camtel2-instance-1','camtel2-instance-2'],
+                'app':['streampool']
              ]
 ]
 
