@@ -107,7 +107,7 @@ pipeline{
                 script{
                     echo "${params.CLIENT}"
                     echo "${params.INSTANCE}"
-                    echo "${params.APP}"
+                    echo "${params.APPLICATION}"
                 }
             }
         }
