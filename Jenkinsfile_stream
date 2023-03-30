@@ -114,7 +114,7 @@ pipeline{
                         def instances = params.INSTANCE.split(",")                        
                         def applications = params.APPLICATION.split(",")  
 
-                        for (inst on instances) {
+                        for (inst in instances) {
                             for (app in applications) {
                                 echo "Deploy ${app} to ${inst}"
                             }
