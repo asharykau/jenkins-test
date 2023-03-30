@@ -111,7 +111,14 @@ pipeline{
                     echo "Applications: ${params.APPLICATION}"
 
                     if (INSTANCE && APPLICATION) {
-                        echo "start"
+                        def instances = params.INSTANCE.split(",")                        
+                        def applications = params.APPLICATION.split(",")  
+
+                        for (inst on instances) {
+                            for (app in applications) {
+                                echo "Deploy ${app} to ${inst}"
+                            }
+                        }
                     }
                 }
             }
