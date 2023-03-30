@@ -117,7 +117,7 @@ pipeline{
                         for (inst in instances) {
                             for (app in applications) {
                                 echo "Deploy ${app} to ${inst}"
-                                config = new File("${CLIENT}/${inst}/${app}/docker-compose.j2")
+                                config = new File("/${CLIENT}/${inst}/${app}/docker-compose.j2")
                                 println "Config found: ${config.isFile()}"
                             }
                         }
