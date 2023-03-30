@@ -114,9 +114,11 @@ pipeline{
                         def instances = params.INSTANCE.split(",")                        
                         def applications = params.APPLICATION.split(",")  
 
+                        echo "Deploy application for ${CLIENT}"
+
                         for (inst in instances) {
+                            echo "Deploy application to ${inst}"
                             for (app in applications) {
-                                echo "Deploy application for ${CLIENT}"
                                 config = new File("/${WORKSPACE}/${CLIENT}/${inst}/${app}/docker-compose.j2")
                                 if (config.isFile()) {
                                     echo "Deploy ${app} on ${inst}"
