@@ -105,7 +105,9 @@ pipeline{
         stage('Run Deploy'){
             steps{
                 script{
-                    sleep 3
+                    echo "${params.CLIENT}"
+                    echo "${params.INSTANCE}"
+                    echo "${params.APP}"
                 }
             }
         }
