@@ -103,7 +103,6 @@ pipeline{
             steps{
                 script{
                     sleep 3
-                    build job: "Setrix/Production/test/downstream"
                 }
             }
         }
