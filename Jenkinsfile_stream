@@ -35,7 +35,7 @@ pipeline{
             ]
         ],
         [$class: 'CascadeChoiceParameter',
-            choiceType: 'PT_CHECKBOX'
+            choiceType: 'PT_CHECKBOX',
             description: 'Select a INSTANCE',
             filterLength: 1,
             filterable: true,
@@ -64,7 +64,7 @@ pipeline{
             ]
         ],
         [$class: 'CascadeChoiceParameter',
-            choiceType: 'PT_CHECKBOX'
+            choiceType: 'PT_CHECKBOX',
             description: 'Select a APPLICATION for deploy',
             filterLength: 1,
             filterable: true,
