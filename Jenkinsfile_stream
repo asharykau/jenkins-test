@@ -9,14 +9,14 @@ def CLIENT_NAME = [
 ]
 
 pipeline{
-    agent(label : deploy)
+    agent { label 'deploy' }
 
     parameters([
         [$class: 'ChoiceParameter',
             choiceType: 'PT_SINGLE_SELECT',
             description: 'Select a CLIENT for deploy services',
             filterLength: 3,
-            filterable: false,
+            filterable: true,
             name: 'CLIENT',
             script: [$class: 'GroovyScript',
                 fallbackScript: [
@@ -38,7 +38,7 @@ pipeline{
             choiceType: 'PT_CHECKBOX',
             description: 'Select a INSTANCE',
             filterLength: 1,
-            filterable: true,
+            filterable: false,
             name: 'INSTANCE',
             referencedParameters: 'CLIENT',
             script: [$class: 'GroovyScript',
@@ -67,7 +67,7 @@ pipeline{
             choiceType: 'PT_CHECKBOX',
             description: 'Select a APPLICATION for deploy',
             filterLength: 1,
-            filterable: true,
+            filterable: false,
             name: 'APPLICATION',
             referencedParameters: 'CLIENT',
             script: [$class: 'GroovyScript',
