@@ -55,12 +55,15 @@ pipeline{
             agent {
                 docker { image 'golang:1.20-alpine' }
             }
+
+            when {
+                 expression { params.RUN_TEST }
+            }
+
             steps {
                 script {
-                    if (params.RUN_TEST) {
-                        sh 'go version'
-                        sh 'ls'
-                    }
+                    sh 'go version'
+                    sh 'ls'
                 }
             }
 
