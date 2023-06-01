@@ -37,7 +37,8 @@ pipeline{
 //    }
 
     parameters {
-        booleanParam(name: 'RUN_TEST', defaultValue: false, description: 'Run golang test')
+        booleanParam(name: 'RUN_TEST', defaultValue: true, description: 'Run golang test')
+        stringParam(name: 'APP', description: 'App name')
     }
 
     stages{
@@ -57,7 +58,10 @@ pipeline{
             }
 
             when {
-                 expression { params.RUN_TEST }
+                allOf {
+                     expression { params.RUN_TEST }
+                     expression { params.APP == 'test' }
+                }
             }
 
             steps {
