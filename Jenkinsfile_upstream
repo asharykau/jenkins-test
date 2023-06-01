@@ -67,7 +67,7 @@ pipeline{
             steps {
                 script {
                     sh 'go version'
-                    sh 'ls'
+                    sh 'cd .. && ls'
                 }
             }
 
@@ -78,6 +78,7 @@ pipeline{
             steps{
                 script{
                     echo "Done upstream"
+                    sh 'ls
                 }
             }
         }
