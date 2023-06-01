@@ -66,8 +66,8 @@ pipeline{
 
             steps {
                 script {
-                    sh 'go version'
-                    sh 'cd .. && ls'
+                    sh "go version"
+                    sh "go test ./microservices/${APP}/..."
                 }
             }
 
