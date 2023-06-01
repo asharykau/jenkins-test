@@ -36,6 +36,9 @@ pipeline{
 //        retry(1)
 //    }
 
+    parameters {
+        booleanParam(name: 'RUN_TEST', defaultValue: false, description: 'Run golang test')
+    }
 
     stages{
         
@@ -53,8 +56,10 @@ pipeline{
                 docker { image 'golang:1.20-alpine' }
             }
             steps {
-                sh 'go version'
-                sh 'ls'
+                if (params.RUN_TEST) {
+                    sh 'go version'
+                    sh 'ls'
+                }
             }
 
         }
