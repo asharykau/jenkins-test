@@ -32,23 +32,35 @@ def getBuildUser() {
 pipeline{
     agent any
 
-    options {
-        retry(1)
-    }
+//    options {
+//        retry(1)
+//    }
 
 
     stages{
         
-        stage('Run Downstream'){
-            steps{
-                script{
-                    sleep 3
-                    build job: "Setrix/Production/test/downstream"
-                }
+//        stage('Run Downstream'){
+//            steps{
+//                script{
+//                    sleep 3
+//                    build job: "Setrix/Production/test/downstream"
+//                }
+//            }
+//        }
+
+        stage('Run test') {
+            agent {
+                docker { image 'golang:1.20-alpine' }
             }
+            steps {
+                sh 'go version'
+                sh 'ls'
+            }
+
         }
 
-        stage('Done upstream'){
+
+        stage('Done'){
             steps{
                 script{
                     echo "Done upstream"
