@@ -38,7 +38,11 @@ pipeline{
 
     parameters {
         booleanParam(name: 'RUN_TEST', defaultValue: true, description: 'Run golang test')
-        string(name: 'APP', description: 'App name')
+        choice(name: 'APP', choices: [
+          'streampool',
+          'packager',
+        ], description: 'Choose APP deploy to')
+        
     }
 
     stages{
