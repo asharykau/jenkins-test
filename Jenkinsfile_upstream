@@ -60,7 +60,7 @@ pipeline{
             when {
                 allOf {
                      expression { params.RUN_TEST }
-                     expression { params.APP == 'test' }
+                     expression { params.APP }
                 }
             }
 
