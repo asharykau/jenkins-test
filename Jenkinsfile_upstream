@@ -56,9 +56,11 @@ pipeline{
                 docker { image 'golang:1.20-alpine' }
             }
             steps {
-                if (params.RUN_TEST) {
-                    sh 'go version'
-                    sh 'ls'
+                script {
+                    if (params.RUN_TEST) {
+                        sh 'go version'
+                        sh 'ls'
+                    }
                 }
             }
 
