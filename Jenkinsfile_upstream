@@ -42,50 +42,40 @@ pipeline{
           'streampool',
           'packager',
         ], description: 'Choose APP deploy to')
-        
+        booleanParam(name: 'RUN_TEST', defaultValue: true, description: 'Run test')
     }
 
     stages{
         
-//        stage('Run Downstream'){
-//            steps{
-//                script{
-//                    sleep 3
-//                    build job: "Setrix/Production/test/downstream"
-//                }
-//            }
-//        }
 
         stage('Run test') {
             agent {
                 docker { image 'golang:1.20-alpine' }
             }
 
-            when {
-                allOf {
-                     expression { params.RUN_TEST }
-                     expression { params.APP }
-                }
-            }
-
             steps {
                 script {
-                    sh "go version"
-                    sh "go test ./microservices/${APP}/..."
+                    if (params.RUN_TEST) {
+                        credentials(
+                            [
+                                string(credentialsId: 'RIXJOB_NS_USER', variable: 'RIXJOB_NS_USER')
+                            ]
+                        )
+                    }
+                    if (params.TCMALLOC) {
+                        buildParams += ' --build-arg NS_USER=${RIXJOB_NS_USER}'                      
+                    }
+
+                    buildParams += ' -f ./ci/docker/ubuntu/Dockerfile_jenkins .'
+
+                    docker.withRegistry('','dockerhub-push') {
+                        def dockerImage = docker.build("123", buildParams)
+                        dockerImage.push()
+                    }
                 }
             }
 
         }
 
-
-        stage('Done'){
-            steps{
-                script{
-                    echo "Done upstream"
-                    sh 'ls'
-                }
-            }
-        }
-    }
 
 }
