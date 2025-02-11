@@ -49,28 +49,22 @@ pipeline{
         
 
         stage('Run test') {
-
             steps {
                 script {
                     buildParams = ''
                     if (params.RUN_TEST) {
-                        credentials(
-                            [
-                                string(credentialsId: 'RIXJOB_NS_USER', variable: 'RIXJOB_NS_USER')
-                            ]
-                        )
-                        buildParams += ' --build-arg NS_USER=${RIXJOB_NS_USER}'                      
+                        withCredentials([
+                            string(credentialsId: 'RIXJOB_NS_USER', variable: 'RIXJOB_NS_USER'),
+                        ]) {
+                            buildParams += " --build-arg NS_USER=${RIXJOB_NS_USER}"
+                        }
                     }
-
-                    buildParams += ' -f ./ci/docker/ubuntu/Dockerfile_jenkins .'
-
-                    docker.withRegistry('','dockerhub-push') {
-                        def dockerImage = docker.build("123", buildParams)
-                        dockerImage.push()
-                    }
+                docker.withRegistry('','dockerhub-push') {
+                    def dockerImage = docker.build("123", buildParams)
+                    dockerImage.push()
+                }
                 }
             }
-
         }
     }
 
