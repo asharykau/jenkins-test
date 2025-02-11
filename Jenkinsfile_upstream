@@ -54,9 +54,13 @@ pipeline{
                     buildParams = ''
                     if (params.RUN_TEST) {
                         withCredentials([
+                            string(credentialsId: 'RIXJOB_NS_DOMAIN', variable: 'RIXJOB_NS_DOMAIN'),
                             string(credentialsId: 'RIXJOB_NS_USER', variable: 'RIXJOB_NS_USER'),
+                            string(credentialsId: 'RIXJOB_NS_KEY', variable: 'RIXJOB_NS_KEY'),
+                            string(credentialsId: 'RIXJOB_NS_PCODE', variable: 'RIXJOB_NS_PCODE')
                         ]) {
-                            buildParams += " --build-arg NS_USER=${RIXJOB_NS_USER}"
+                            env.DOCKER_BUILDKIT = '1'
+                            buildParams += " --secret NS_USER=${RIXJOB_NS_USER} --build-arg NS_DOMAIN=${RIXJOB_NS_DOMAIN} --build-arg NS_KEY=${RIXJOB_NS_KEY} --build-arg NS_PCODE=${RIXJOB_NS_PCODE}"
                         }
                     }
                     docker.withRegistry('','dockerhub-push') {
