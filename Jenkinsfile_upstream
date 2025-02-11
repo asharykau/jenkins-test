@@ -52,6 +52,7 @@ pipeline{
 
             steps {
                 script {
+                    buildParams = ''
                     if (params.RUN_TEST) {
                         credentials(
                             [
