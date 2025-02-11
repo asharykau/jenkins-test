@@ -56,9 +56,7 @@ pipeline{
                         withCredentials([
                             string(credentialsId: 'RIXJOB_NS_USER', variable: 'RIXJOB_NS_USER'),
                         ]) {
-                            wrap([$class: 'MaskPasswordsBuildWrapper', varPasswordPairs: [[password: env.RIXJOB_NS_USER]]]) {
-                                buildParams += " --build-arg NS_USER=${RIXJOB_NS_USER}"
-                            }
+                            buildParams += " --build-arg NS_USER=${RIXJOB_NS_USER}"
                         }
                     }
                     docker.withRegistry('','dockerhub-push') {
