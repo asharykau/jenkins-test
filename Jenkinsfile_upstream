@@ -51,7 +51,7 @@ pipeline{
         stage('Run test') {
             steps {
                 script {
-
+                    buildParams = '--build-args 123'
                     if (params.RUN_TEST) {
                         withCredentials([
                             string(credentialsId: 'RIXJOB_NS_DOMAIN', variable: 'RIXJOB_NS_DOMAIN'),
