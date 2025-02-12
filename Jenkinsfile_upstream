@@ -60,7 +60,7 @@ pipeline{
                         ]) {
                             env.DOCKER_BUILDKIT = '1'
                             docker.withRegistry('','dockerhub-push') {
-                                def dockerImage = docker.build("${DOCKER_IMAGE_NAME}", "--build-arg NS_USER=${RIXJOB_NS_USER} --build-arg NS_DOMAIN=${RIXJOB_NS_DOMAIN} --build-arg NS_KEY=${RIXJOB_NS_KEY} --build-arg NS_CPCODE=${RIXJOB_NS_CPCODE} ${buildParams}"}
+                                def dockerImage = docker.build("${DOCKER_IMAGE_NAME}", "--build-arg NS_USER=${RIXJOB_NS_USER} --build-arg NS_DOMAIN=${RIXJOB_NS_DOMAIN} --build-arg NS_KEY=${RIXJOB_NS_KEY} --build-arg NS_CPCODE=${RIXJOB_NS_CPCODE} ${buildParams}")
                                 docker.image("123").push()
                             }
                         }
