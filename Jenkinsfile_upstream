@@ -37,7 +37,6 @@ pipeline{
 //    }
 
     parameters {
-        booleanParam(name: 'RUN_TEST', defaultValue: true, description: 'Run golang test')
         choice(name: 'APP', choices: [
           'streampool',
           'packager',
@@ -64,6 +63,9 @@ pipeline{
                             docker.image("123").push()
                             }
                         }
+                    } else {
+                        docker.withRegistry('','dockerhub-push') {"${DOCKER_IMAGE_NAME}", buildParams}
+                        docker.image("123").push()
                     }
                 }
             }
