@@ -59,7 +59,6 @@ pipeline{
                         buildParams = '--build-args TEST=123'
 
                         if (params.RUN_TEST) {
-    //                            env.DOCKER_BUILDKIT = '1'
                             buildParams += "--build-arg NS_USER=${RIXJOB_NS_USER} "
                             buildParams += "--build-arg NS_DOMAIN=${RIXJOB_NS_DOMAIN} "
                             buildParams += "--build-arg NS_KEY=${RIXJOB_NS_KEY} "
