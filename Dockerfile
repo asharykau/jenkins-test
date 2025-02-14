@@ -1,6 +1,7 @@
 # Используем базовый образ
-FROM alpine:latest
+FROM alpine:latest as build
 
+FROM build as test
 # Объявляем build-args
 ARG NS_USER
 ARG NS_DOMAIN
