@@ -14,7 +14,15 @@ RUN echo "Testing build arguments:" && \
     echo "NS_DOMAIN: ${NS_DOMAIN}" && \
     echo "NS_KEY: ${NS_KEY}" && \
     echo "NS_CPCODE: ${NS_CPCODE}" && \
-    echo "TEST: ${TEST}"
+    export NS_DOMAIN="${NS_DOMAIN}" \
+    && export NS_USER="${NS_USER}" \
+    && export NS_KEY="${NS_KEY}" \
+    && export NS_CPCODE="${NS_CPCODE}" \
+    && echo "NS_USER=${NS_USER}" \
+    && echo "NS_DOMAIN=${NS_DOMAIN}" \
+    && echo "NS_KEY=${NS_KEY}" \
+    && echo "NS_CPCODE=${NS_CPCODE}" \
+    && echo "TEST: ${TEST}"
 
 # Добавляем команду по умолчанию
 CMD ["echo", "Build completed successfully"] 
