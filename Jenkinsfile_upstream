@@ -64,10 +64,12 @@ pipeline{
                             buildParams += "--build-arg NS_KEY=${RIXJOB_NS_KEY} "
                             buildParams += "--build-arg NS_CPCODE=${RIXJOB_NS_CPCODE}"
                         } 
-    
+
+                        buildParams += ' .'
+
                         docker.withRegistry('','dockerhub-push') {
                             def dockerImage = docker.build("123", buildParams)
-                            dockerImage.push()
+//                            dockerImage.push()
                         }
                     }
                 }
