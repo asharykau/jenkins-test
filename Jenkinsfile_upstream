@@ -56,7 +56,7 @@ pipeline{
                         string(credentialsId: 'RIXJOB_NS_KEY', variable: 'RIXJOB_NS_KEY'),
                         string(credentialsId: 'RIXJOB_NS_CPCODE', variable: 'RIXJOB_NS_CPCODE')
                     ]) {
-                        buildParams = '--build-args TEST=123'
+                        buildParams = '--build-args TEST=123 '
 
                         if (params.RUN_TEST) {
                             buildParams += "--build-arg NS_USER=${RIXJOB_NS_USER} "
