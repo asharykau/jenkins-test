@@ -1,13 +1,14 @@
 # Используем базовый образ
 FROM alpine:latest as build
 
-FROM build as test
-# Объявляем build-args
 ARG NS_USER
 ARG NS_DOMAIN
 ARG NS_KEY
 ARG NS_CPCODE
 ARG TEST
+
+FROM build as test
+
 
 # Создаем слой для проверки переменных
 RUN echo "Testing build arguments:" && \
